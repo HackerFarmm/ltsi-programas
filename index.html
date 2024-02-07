@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise Morfológica de Espermatozoides</title>
+    <style>
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .defeito,
+        .sem_defeito,
+        .parar_analise {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        .defeito {
+            background-color: green;
+        }
+
+        .sem_defeito {
+            background-color: blue;
+        }
+
+        .parar_analise {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Análise Morfológica de Espermatozóides</h1>
+    <div class="button-grid">
+        {% for i in range(1, 24) %}
+        <div>
+            <button class="defeito" id="defeito{{i}}">Defeito {{i}}</button>
+            <span id="defeito{{i}}-count">0</span>
+        </div>
+        {% endfor %}
+        <div>
+            <button class="sem_defeito" id="sem_defeito">Sem Defeito</button>
+            <span id="sem_defeito-count">0</span>
+        </div>
+        <button class="parar_analise" id="parar_analise">Parar Análise</button>
+    </div>
+
+    <script>
+        const buttons = document.querySelectorAll('button');
+        const counts = {};
+
+        buttons.forEach((button) => {
+            counts[button.id] = 0;
+
+            button.addEventListener('click', () => {
+                fetch(`/contar_defeito/${button.id}`);
+                counts[button.id]++;
+                document.getElementById(`${button.id}-count`).innerText = counts[button.id];
+            });
+        });
+
+        document.getElementById('parar_analise').addEventListener('click', async () => {
+            const response = await fetch('/terminar_analise');
+            const report = await response.text();
+
+            alert(report);
+
+            for (const button of buttons) {
+                counts[button.id] = 0;
+                document.getElementById(`${button.id}-count`).innerText = counts[button.id];
+            }
+        });
+    </script>
+</body>
+
+</html>
