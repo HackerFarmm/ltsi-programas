@@ -25,11 +25,10 @@ def terminar_analise():
     defeito_mais_comum = [defeito for defeito, contagem in contagem_defeitos.items(
     ) if contagem == max_defeitos]
 
-    for defeito_id, contagem in contagem_defeitos.items():
-        porcentagem = (contagem / total_defeitos) * \
-            100 if total_defeitos > 0 else 0
-        relatorio += f"Defeito: {defeito_id}, Quantidade: {
-            contagem}, Porcentagem: {porcentagem:.2f}%\n"
+   for defeito_id, contagem in contagem_defeitos.items():
+    porcentagem = (contagem / total_defeitos) * 100 if total_defeitos > 0 else 0
+    relatorio += f"Defeito: {defeito_id}, Quantidade: {contagem}, Porcentagem: {porcentagem:.2f}%\n"
+
 
     relatorio += f"\nDefeito(s) mais comum(ns): {', '.join(defeito_mais_comum)}, Quantidade: {
         max_defeitos}, Porcentagem: {(max_defeitos / total_defeitos) * 100 if total_defeitos > 0 else 0:.2f}%\n"
